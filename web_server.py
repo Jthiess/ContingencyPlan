@@ -1,11 +1,9 @@
 """Flask web server for the Contingency Plan Discord archive viewer."""
 
-import gzip
 import json
 import logging
 import os
 import secrets
-import shutil
 import subprocess
 import sys
 import threading
@@ -20,41 +18,27 @@ from urllib.parse import urlencode
 import psycopg2
 import psycopg2.extras
 import requests as http_requests
-from dotenv import load_dotenv
 from flask import Flask, jsonify, redirect, request, send_from_directory, session
 
-load_dotenv()
+from config import (
+    DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_SCHEMA, DB_USER,
+    DOWNLOAD_DIR, FLASK_PORT,
+    fix_windows_encoding, gzip_rotator, gzip_namer,
+)
 
-# Fix Windows console encoding so Unicode characters don't crash the stream
-# handler with a charmap error.
-import sys as _sys
-if hasattr(_sys.stdout, "reconfigure"):
-    _sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-if hasattr(_sys.stderr, "reconfigure"):
-    _sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+fix_windows_encoding()
 
 _log_fmt = logging.Formatter(
     "%(asctime)s [%(levelname)s] %(name)s: %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
 )
-_sh = logging.StreamHandler(_sys.stdout)
+_sh = logging.StreamHandler(sys.stdout)
 _sh.setFormatter(_log_fmt)
-
-
-def _gzip_rotator(source, dest):
-    with open(source, "rb") as f_in, gzip.open(dest, "wb") as f_out:
-        shutil.copyfileobj(f_in, f_out)
-    os.remove(source)
-
-
-def _gzip_namer(name):
-    return name + ".gz"
-
 
 _fh = RotatingFileHandler("web.log", maxBytes=10 * 1024 * 1024, backupCount=5, encoding="utf-8")
 _fh.setFormatter(_log_fmt)
-_fh.rotator = _gzip_rotator
-_fh.namer = _gzip_namer
+_fh.rotator = gzip_rotator
+_fh.namer = gzip_namer
 
 _root = logging.getLogger()
 _root.addHandler(_sh)
@@ -77,8 +61,6 @@ def _apply_log_level(debug: bool):
 _debug_on = os.getenv("LOG_DEBUG", "true").lower() not in ("0", "false", "no")
 _apply_log_level(_debug_on)
 
-DOWNLOAD_DIR = os.getenv("DOWNLOAD_DIR", "./downloads")
-DB_SCHEMA = os.getenv("DB_SCHEMA", "public")
 ENV_PATH = Path(".env")
 
 # Auth config
@@ -125,11 +107,11 @@ app.secret_key = SECRET_KEY
 
 def get_db():
     return psycopg2.connect(
-        host=os.getenv("DB_HOST", "localhost"),
-        port=int(os.getenv("DB_PORT", "5432")),
-        dbname=os.getenv("DB_NAME", "contingencyplan"),
-        user=os.getenv("DB_USER", "postgres"),
-        password=os.getenv("DB_PASSWORD", ""),
+        host=DB_HOST,
+        port=DB_PORT,
+        dbname=DB_NAME,
+        user=DB_USER,
+        password=DB_PASSWORD,
         options=f"-c search_path={DB_SCHEMA}",
     )
 
@@ -1715,4 +1697,4 @@ threading.Thread(target=_scheduler_loop, daemon=True).start()
 ensure_auth_tables()
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", debug=True, port=5000)
+    app.run(host="0.0.0.0", debug=True, port=FLASK_PORT)

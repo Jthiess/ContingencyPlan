@@ -11,16 +11,13 @@ All configuration is read from environment variables (see .env.example).
 
 import argparse
 import asyncio
-import gzip
 import logging
-import os
-import shutil
 import sys
 from logging.handlers import RotatingFileHandler
 
 import discord
 
-from config import DISCORD_BOT_TOKEN, DOWNLOAD_DIR, GUILD_ID
+from config import DISCORD_BOT_TOKEN, DOWNLOAD_DIR, GUILD_ID, fix_windows_encoding, gzip_rotator, gzip_namer
 from db import Database
 from cloner import ServerCloner
 
@@ -28,13 +25,7 @@ from cloner import ServerCloner
 # ── logging ──────────────────────────────────────────────────────────────────
 
 def setup_logging():
-    # Fix Windows console encoding so Unicode characters (e.g. emoji in
-    # Discord usernames / messages) don't crash the StreamHandler with a
-    # charmap error.  The file handler already uses utf-8; this covers stdout.
-    if hasattr(sys.stdout, "reconfigure"):
-        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-    if hasattr(sys.stderr, "reconfigure"):
-        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    fix_windows_encoding()
 
     fmt = logging.Formatter(
         "%(asctime)s [%(levelname)s] %(name)s: %(message)s",
@@ -45,16 +36,11 @@ def setup_logging():
     sh.setLevel(logging.DEBUG)
     sh.setFormatter(fmt)
 
-    def _gzip_rotator(source, dest):
-        with open(source, "rb") as f_in, gzip.open(dest, "wb") as f_out:
-            shutil.copyfileobj(f_in, f_out)
-        os.remove(source)
-
     fh = RotatingFileHandler("clone.log", maxBytes=20 * 1024 * 1024, backupCount=3, encoding="utf-8")
     fh.setLevel(logging.DEBUG)
     fh.setFormatter(fmt)
-    fh.rotator = _gzip_rotator
-    fh.namer = lambda name: name + ".gz"
+    fh.rotator = gzip_rotator
+    fh.namer = gzip_namer
 
     root = logging.getLogger()
     root.setLevel(logging.DEBUG)
