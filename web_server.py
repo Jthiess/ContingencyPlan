@@ -11,7 +11,7 @@ import sys
 import threading
 import time
 import uuid
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from functools import wraps
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
@@ -1013,7 +1013,7 @@ def _run_scheduled_clone(guild_id: str, full: bool, skip_downloads: bool):
 def _scheduler_loop():
     while True:
         try:
-            now = datetime.utcnow()
+            now = datetime.now(timezone.utc)
             with _schedules_lock:
                 changed = False
                 for sched in _schedules:
@@ -1659,7 +1659,7 @@ def admin_create_schedule():
         return jsonify({"error": "guild_id required"}), 400
     if interval_hours < 1:
         return jsonify({"error": "interval_hours must be >= 1"}), 400
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc)
     sched = {
         "id": str(uuid.uuid4()),
         "guild_id": guild_id,
@@ -1704,7 +1704,7 @@ def admin_update_schedule(schedule_id):
             if hours < 1:
                 return jsonify({"error": "interval_hours must be >= 1"}), 400
             sched["interval_hours"] = hours
-            sched["next_run"] = (datetime.utcnow() + timedelta(hours=hours)).isoformat()
+            sched["next_run"] = (datetime.now(timezone.utc) + timedelta(hours=hours)).isoformat()
         _save_schedules()
     return jsonify(sched)
 
