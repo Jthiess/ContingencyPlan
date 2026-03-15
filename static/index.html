@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Contingency Plan — Discord Archive Viewer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+
+    <!-- ── Server list (far left) ── -->
+    <nav id="server-list">
+      <div class="server-list-inner">
+        <div class="server-icon home-icon" title="Home" id="home-btn">
+          <svg width="28" height="20" viewBox="0 0 28 20" fill="currentColor">
+            <path d="M23.0212 1.67671C21.3107 0.879656 19.5079 0.318797 17.6584 0C17.4062 0.461742 17.1749 0.934541 16.9708 1.4182C15.0038 1.1156 12.9974 1.1156 11.0304 1.4182C10.826 0.934541 10.5949 0.461742 10.3427 0C8.49209 0.319883 6.68802 0.880842 4.97922 1.67671C1.44042 6.83916 0.476479 11.8787 0.958437 16.8478C2.95154 18.3572 5.17788 19.5259 7.54855 20.2809C8.08599 19.5614 8.56473 18.7946 8.97927 17.9872C8.20068 17.7003 7.45134 17.3404 6.74184 16.9139C6.93468 16.7718 7.12251 16.6225 7.30532 16.4778C9.39428 17.4555 11.6826 17.9644 14.0002 17.9644C16.3178 17.9644 18.6061 17.4555 20.6951 16.4778C20.8801 16.6341 21.0679 16.7834 21.2586 16.9139C20.5477 17.3418 19.7968 17.7032 19.0168 17.9908C19.4305 18.7962 19.9092 19.5601 20.4518 20.2809C22.8234 19.5277 25.0513 18.3594 27.0444 16.8478C27.6068 11.1087 26.0853 6.11472 23.0212 1.67671ZM9.68041 13.7853C8.38416 13.7853 7.31514 12.6161 7.31514 11.1726C7.31514 9.72908 8.35944 8.55064 9.68041 8.55064C11.0014 8.55064 12.0704 9.72908 12.0454 11.1726C12.0204 12.6161 10.9914 13.7853 9.68041 13.7853ZM18.3196 13.7853C17.0233 13.7853 15.9543 12.6161 15.9543 11.1726C15.9543 9.72908 16.9986 8.55064 18.3196 8.55064C19.6406 8.55064 20.7096 9.72908 20.6846 11.1726C20.6596 12.6161 19.6406 13.7853 18.3196 13.7853Z"/>
+          </svg>
+        </div>
+        <div class="server-list-divider"></div>
+        <div id="guild-icons"></div>
+      </div>
+    </nav>
+
+    <!-- ── Channel sidebar ── -->
+    <aside id="channel-sidebar">
+      <header id="server-header">
+        <span id="server-name">Select a Server</span>
+        <svg class="chevron-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </header>
+
+      <div id="channel-list"></div>
+
+      <div id="user-panel">
+        <div class="user-panel-avatar">
+          <div class="avatar-placeholder" id="self-avatar"></div>
+          <div class="user-status online"></div>
+        </div>
+        <div class="user-panel-info">
+          <div class="user-panel-name" id="self-name">—</div>
+          <div class="user-panel-tag" id="self-tag">Archive Viewer</div>
+        </div>
+        <div class="user-panel-icons">
+          <a href="/admin" class="icon-btn" title="Admin Panel" id="admin-btn" style="display:none">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
+            </svg>
+          </a>
+          <a href="/settings" class="icon-btn" title="Settings" id="settings-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 15.5A3.5 3.5 0 0 1 8.5 12 3.5 3.5 0 0 1 12 8.5a3.5 3.5 0 0 1 3.5 3.5 3.5 3.5 0 0 1-3.5 3.5m7.43-2.92c.04-.3.07-.62.07-.93s-.03-.63-.07-.93l2-1.57c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.56-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2 1.57c-.04.3-.07.62-.07.93s.03.63.07.93l-2 1.57c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.04.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.11-.2.06-.47-.12-.61l-2-1.57z"/>
+            </svg>
+          </a>
+          <a href="/logout" class="icon-btn" title="Log Out" id="logout-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M16 13v-2H7V8l-5 4 5 4v-3z"/>
+              <path d="M20 3h-9a2 2 0 00-2 2v4h2V5h9v14h-9v-4H9v4a2 2 0 002 2h9a2 2 0 002-2V5a2 2 0 00-2-2z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ── Main content ── -->
+    <main id="main-content">
+      <header id="channel-header">
+        <div class="channel-header-left">
+          <span class="channel-header-icon" id="channel-type-icon">#</span>
+          <span id="channel-header-name">Select a channel</span>
+          <div class="channel-header-divider"></div>
+          <span id="channel-header-topic" class="channel-topic-text"></span>
+        </div>
+        <div class="channel-header-right">
+          <button class="icon-btn" title="Search" id="search-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+          <button class="icon-btn toggle-members-btn" title="Toggle Members" id="toggle-members">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M14 8.00598C14 10.211 12.206 12.006 10 12.006C7.795 12.006 6 10.211 6 8.00598C6 5.80098 7.795 4.00598 10 4.00598C12.206 4.00598 14 5.80098 14 8.00598ZM3 19.006C3 15.132 6.135 12.006 10 12.006C13.865 12.006 17 15.132 17 19.006V20.006H3V19.006Z"/>
+              <path d="M20 8L20 14M17 11H23" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Search bar (hidden by default) -->
+      <div id="search-bar" class="hidden">
+        <input type="text" id="search-input" placeholder="Search messages..." />
+        <button id="search-close">✕</button>
+      </div>
+      <div id="search-results" class="hidden"></div>
+
+      <div id="messages-container">
+        <div id="load-more-container">
+          <button id="load-more-btn" class="hidden">Load earlier messages</button>
+        </div>
+        <div id="messages-list"></div>
+        <div id="messages-placeholder">
+          <div class="placeholder-icon">📁</div>
+          <h3>Welcome to The Contingency Plan</h3>
+          <p>Select a server and channel to view the archived messages.</p>
+        </div>
+      </div>
+
+      <div id="message-bar">
+        <div class="message-bar-input">
+          <span id="message-bar-placeholder">This is a read-only archive</span>
+        </div>
+      </div>
+    </main>
+
+    <!-- ── Members sidebar ── -->
+    <aside id="members-sidebar">
+      <div id="members-list"></div>
+    </aside>
+
+  </div>
+
+  <!-- ── Login Overlay ── -->
+  <div id="login-overlay" class="hidden">
+    <div id="login-panel">
+      <div class="login-logo">
+        <svg width="48" height="36" viewBox="0 0 28 20" fill="currentColor">
+          <path d="M23.0212 1.67671C21.3107 0.879656 19.5079 0.318797 17.6584 0C17.4062 0.461742 17.1749 0.934541 16.9708 1.4182C15.0038 1.1156 12.9974 1.1156 11.0304 1.4182C10.826 0.934541 10.5949 0.461742 10.3427 0C8.49209 0.319883 6.68802 0.880842 4.97922 1.67671C1.44042 6.83916 0.476479 11.8787 0.958437 16.8478C2.95154 18.3572 5.17788 19.5259 7.54855 20.2809C8.08599 19.5614 8.56473 18.7946 8.97927 17.9872C8.20068 17.7003 7.45134 17.3404 6.74184 16.9139C6.93468 16.7718 7.12251 16.6225 7.30532 16.4778C9.39428 17.4555 11.6826 17.9644 14.0002 17.9644C16.3178 17.9644 18.6061 17.4555 20.6951 16.4778C20.8801 16.6341 21.0679 16.7834 21.2586 16.9139C20.5477 17.3418 19.7968 17.7032 19.0168 17.9908C19.4305 18.7962 19.9092 19.5601 20.4518 20.2809C22.8234 19.5277 25.0513 18.3594 27.0444 16.8478C27.6068 11.1087 26.0853 6.11472 23.0212 1.67671Z"/>
+        </svg>
+      </div>
+      <h1>Contingency Plan</h1>
+      <p>Discord Archive Viewer</p>
+      <a href="/login" class="login-btn">Sign in with Authentik</a>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

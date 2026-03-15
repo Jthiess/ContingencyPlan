@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Contingency Plan</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="admin-page">
+
+    <div id="admin-topbar">
+      <div id="admin-topbar-title">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="opacity:.8">
+          <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/>
+        </svg>
+        Admin Panel
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <a href="/settings" class="btn-secondary" style="font-size:13px;padding:5px 14px;text-decoration:none">Settings</a>
+        <a href="/" class="btn-secondary" style="font-size:13px;padding:5px 14px;text-decoration:none">← Archive</a>
+      </div>
+    </div>
+
+    <div id="admin-layout">
+
+      <nav id="admin-sidebar">
+        <div class="admin-sidebar-label">Management</div>
+        <button class="admin-tab active" data-tab="guilds">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M21 6.5c0-1.93-1.57-3.5-3.5-3.5h-11C4.57 3 3 4.57 3 6.5v11C3 19.43 4.57 21 6.5 21h11c1.93 0 3.5-1.57 3.5-3.5v-11zm-2 0v11c0 .83-.67 1.5-1.5 1.5h-11C5.67 19 5 18.33 5 17.5v-11C5 5.67 5.67 5 6.5 5h11c.83 0 1.5.67 1.5 1.5z"/><circle cx="9" cy="9" r="1.5"/><circle cx="15" cy="9" r="1.5"/><circle cx="9" cy="15" r="1.5"/><circle cx="15" cy="15" r="1.5"/></svg>
+          Saved Guilds
+        </button>
+        <button class="admin-tab" data-tab="users">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+          Users
+        </button>
+        <button class="admin-tab" data-tab="defaults">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+          Default Permissions
+        </button>
+        <div class="admin-sidebar-label" style="margin-top:16px">System</div>
+        <button class="admin-tab" data-tab="config">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg>
+          Configuration
+        </button>
+        <button class="admin-tab" data-tab="scheduler">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
+          Scheduler
+        </button>
+        <button class="admin-tab" data-tab="logging">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/><path d="M7 9h10v2H7zm0-3h10v2H7zm0 6h7v2H7z"/></svg>
+          Logging
+        </button>
+      </nav>
+
+      <div id="admin-content">
+
+        <!-- Guilds tab -->
+        <div id="admin-tab-guilds" class="admin-tab-content">
+          <h2 class="admin-content-title">Saved Guilds</h2>
+
+          <div id="clone-new">
+            <div class="config-section-label" style="margin:0 0 10px">Clone New Guild</div>
+            <div class="clone-new-row">
+              <input type="text" id="clone-guild-id-input" placeholder="Guild ID" />
+              <label class="clone-checkbox"><input type="checkbox" id="clone-skip-dl" /> Skip downloads</label>
+              <button class="btn-secondary" id="clone-new-btn">Clone</button>
+              <button class="btn-danger" id="clone-new-full-btn">Full Clone</button>
+            </div>
+          </div>
+
+          <div class="admin-section-card" style="margin-top:16px">
+            <div class="config-section-label" style="margin-top:0">Archived Guilds</div>
+            <div id="saved-guilds-list"><div class="admin-loading">Loading guilds…</div></div>
+          </div>
+        </div>
+
+        <!-- Config tab -->
+        <div id="admin-tab-config" class="admin-tab-content hidden">
+          <h2 class="admin-content-title">Configuration</h2>
+          <form id="config-form">
+            <div class="admin-section-card">
+              <div class="config-section-label" style="margin-top:0">Discord</div>
+              <div class="config-field">
+                <label>DISCORD_BOT_TOKEN</label>
+                <input type="password" name="DISCORD_BOT_TOKEN" autocomplete="off" />
+              </div>
+              <div class="config-field" style="margin-bottom:0">
+                <label>GUILD_ID <span class="config-hint">(default for cloning)</span></label>
+                <input type="text" name="GUILD_ID" />
+              </div>
+            </div>
+
+            <div class="admin-section-card">
+              <div class="config-section-label" style="margin-top:0">PostgreSQL</div>
+              <div class="config-row">
+                <div class="config-field">
+                  <label>DB_HOST</label>
+                  <input type="text" name="DB_HOST" />
+                </div>
+                <div class="config-field config-field-sm">
+                  <label>DB_PORT</label>
+                  <input type="text" name="DB_PORT" />
+                </div>
+              </div>
+              <div class="config-field">
+                <label>DB_NAME</label>
+                <input type="text" name="DB_NAME" />
+              </div>
+              <div class="config-row">
+                <div class="config-field">
+                  <label>DB_USER</label>
+                  <input type="text" name="DB_USER" />
+                </div>
+                <div class="config-field">
+                  <label>DB_PASSWORD</label>
+                  <input type="password" name="DB_PASSWORD" autocomplete="off" />
+                </div>
+              </div>
+              <div class="config-field" style="margin-bottom:0">
+                <label>DB_SCHEMA</label>
+                <input type="text" name="DB_SCHEMA" />
+              </div>
+            </div>
+
+            <div class="admin-section-card">
+              <div class="config-section-label" style="margin-top:0">Downloads</div>
+              <div class="config-field" style="margin-bottom:0">
+                <label>DOWNLOAD_DIR</label>
+                <input type="text" name="DOWNLOAD_DIR" />
+              </div>
+            </div>
+
+            <div id="config-actions">
+              <span id="config-status"></span>
+              <button type="submit" class="btn-primary">Save Configuration</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Users tab -->
+        <div id="admin-tab-users" class="admin-tab-content hidden">
+          <div id="users-list-view">
+            <h2 class="admin-content-title">Users</h2>
+            <div class="config-section-label">Registered Users</div>
+            <div id="users-list"><div class="admin-loading">Loading…</div></div>
+          </div>
+          <div id="user-detail-view" class="hidden">
+            <div id="user-detail-header">
+              <button class="btn-secondary" id="users-back-btn" style="font-size:12px;padding:4px 10px">← Back</button>
+              <span id="user-detail-name"></span>
+              <span class="user-admin-badge hidden" id="user-detail-admin-badge">Admin</span>
+            </div>
+            <div id="user-detail-body">
+              <div id="user-detail-left">
+                <div class="config-section-label" style="margin-top:16px">Discord Identity</div>
+                <div id="user-discord-links-list"></div>
+                <div class="discord-link-search">
+                  <input type="text" id="discord-link-search-input" placeholder="Search Discord users to link…" />
+                  <div id="discord-link-search-results" class="hidden"></div>
+                </div>
+
+                <div class="config-section-label" style="margin-top:16px">Guild Access</div>
+                <div id="user-guild-access-list"></div>
+
+                <div class="config-section-label" style="margin-top:16px">Hidden Authors</div>
+                <div class="channel-access-hint" style="margin-bottom:6px">Messages from these Discord users will be hidden from this user.</div>
+                <div id="user-hidden-authors-list"></div>
+                <div class="discord-link-search" style="margin-top:6px">
+                  <input type="text" id="hidden-author-search-input" placeholder="Search Discord users to hide…" />
+                  <div id="hidden-author-search-results" class="hidden"></div>
+                </div>
+
+                <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--separator)">
+                  <button class="btn-danger" id="user-toggle-admin-btn" style="font-size:13px"></button>
+                </div>
+              </div>
+
+              <div id="user-channel-access-section" class="hidden">
+                <div class="config-section-label" style="margin-top:16px">
+                  Channel Access — <span id="channel-access-guild-name"></span>
+                </div>
+                <div id="channel-access-toolbar">
+                  <input type="text" id="channel-filter-input" placeholder="Filter channels…" />
+                  <button class="btn-secondary" id="allow-all-channels-btn" style="font-size:12px;padding:4px 10px;white-space:nowrap">Allow All</button>
+                  <button class="btn-danger" id="deny-all-channels-btn" style="font-size:12px;padding:4px 10px;white-space:nowrap">Deny All</button>
+                  <button class="btn-secondary" id="clear-channel-perms-btn-top" style="font-size:12px;padding:4px 10px;white-space:nowrap">Clear Rules</button>
+                </div>
+                <div class="channel-access-hint" style="margin-bottom:8px">Unchecked = hidden from user</div>
+                <div id="user-channel-access-list"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scheduler tab -->
+        <div id="admin-tab-scheduler" class="admin-tab-content hidden">
+          <h2 class="admin-content-title">Clone Scheduler</h2>
+
+          <div class="admin-section-card">
+            <div class="config-section-label" style="margin-top:0">Add Schedule</div>
+            <div class="config-row">
+              <div class="config-field">
+                <label>Guild ID</label>
+                <input type="text" id="sched-guild-id" placeholder="Enter Guild ID" />
+              </div>
+              <div class="config-field config-field-sm">
+                <label>Every (hours)</label>
+                <input type="number" id="sched-interval" value="24" min="1" style="width:80px" />
+              </div>
+            </div>
+            <div class="clone-new-row" style="margin-top:8px">
+              <label class="clone-checkbox"><input type="checkbox" id="sched-full" /> Full clone</label>
+              <label class="clone-checkbox"><input type="checkbox" id="sched-skip-dl" /> Skip downloads</label>
+              <button class="btn-primary" id="sched-add-btn">Add Schedule</button>
+            </div>
+          </div>
+
+          <div class="admin-section-card" style="margin-top:16px">
+            <div class="config-section-label" style="margin-top:0">Active Schedules</div>
+            <div id="schedules-list"><div class="admin-loading">Loading…</div></div>
+          </div>
+        </div>
+
+        <!-- Logging tab -->
+        <div id="admin-tab-logging" class="admin-tab-content hidden">
+          <h2 class="admin-content-title">Logging</h2>
+
+          <div class="admin-section-card">
+            <div class="config-section-label" style="margin-top:0">Log Level</div>
+            <div style="display:flex;align-items:center;gap:12px;padding:4px 0">
+              <label class="clone-checkbox" style="font-size:14px">
+                <input type="checkbox" id="debug-logging-toggle" />
+                Enable debug logging
+              </label>
+              <span id="log-level-status" style="font-size:12px;color:var(--muted)"></span>
+            </div>
+            <div style="margin-top:6px;font-size:12px;color:var(--muted)">
+              Debug mode logs all internal events. Disable for production to reduce noise.
+            </div>
+          </div>
+
+          <div class="admin-section-card" style="margin-top:16px">
+            <div class="config-section-label" style="margin-top:0">Log Files (web.log)</div>
+            <div id="log-file-stats"><div class="admin-loading">Loading…</div></div>
+            <div style="margin-top:12px;display:flex;align-items:center;gap:10px">
+              <button class="btn-secondary" id="rotate-log-btn" style="font-size:13px">Rotate Now</button>
+              <span id="rotate-status" style="font-size:12px;color:var(--muted)"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Default Permissions tab -->
+        <div id="admin-tab-defaults" class="admin-tab-content hidden">
+          <h2 class="admin-content-title">Default Permissions</h2>
+          <div class="channel-access-hint" style="margin-bottom:16px">
+            These settings apply automatically when a new user logs in for the first time.
+            Guilds not listed here default to <strong>Allowed</strong>.
+          </div>
+          <div id="defaults-body">
+            <div id="defaults-guild-section">
+              <div class="config-section-label">Guild Access Defaults</div>
+              <div id="default-guild-permissions-list"><div class="admin-loading">Loading…</div></div>
+            </div>
+            <div id="defaults-channel-section" class="hidden">
+              <div class="config-section-label" style="margin-top:0">
+                Channel Defaults — <span id="default-channel-guild-name"></span>
+              </div>
+              <div id="default-channel-access-toolbar">
+                <input type="text" id="default-channel-filter-input" placeholder="Filter channels…" />
+                <button class="btn-secondary" id="default-allow-all-btn" style="font-size:12px;padding:4px 10px;white-space:nowrap">Allow All</button>
+                <button class="btn-danger" id="default-deny-all-btn" style="font-size:12px;padding:4px 10px;white-space:nowrap">Deny All</button>
+                <button class="btn-secondary" id="default-clear-all-btn" style="font-size:12px;padding:4px 10px;white-space:nowrap">Clear Rules</button>
+              </div>
+              <div class="channel-access-hint" style="margin-bottom:8px">
+                Unchecked = hidden by default. Channels without a rule use the guild default.
+              </div>
+              <div id="default-channel-access-list"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

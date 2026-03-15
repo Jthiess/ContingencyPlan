@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Settings — Contingency Plan</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="admin-page">
+
+    <div id="admin-topbar">
+      <div id="admin-topbar-title">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="opacity:.7">
+          <path d="M12 15.5A3.5 3.5 0 0 1 8.5 12 3.5 3.5 0 0 1 12 8.5a3.5 3.5 0 0 1 3.5 3.5 3.5 3.5 0 0 1-3.5 3.5m7.43-2.92c.04-.3.07-.62.07-.93s-.03-.63-.07-.93l2-1.57c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.56-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2 1.57c-.04.3-.07.62-.07.93s.03.63.07.93l-2 1.57c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.04.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.11-.2.06-.47-.12-.61l-2-1.57z"/>
+        </svg>
+        Settings
+      </div>
+      <a href="/" class="btn-secondary" style="font-size:13px;padding:5px 14px;text-decoration:none">← Back to Archive</a>
+    </div>
+
+    <div id="admin-layout">
+      <nav id="admin-sidebar">
+        <button class="admin-tab active" data-tab="profile">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+          My Profile
+        </button>
+        <button class="admin-tab" data-tab="access">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+          My Access
+        </button>
+      </nav>
+
+      <div id="admin-content">
+
+        <!-- Profile tab -->
+        <div id="admin-tab-profile" class="admin-tab-content">
+          <h2 class="admin-content-title">My Profile</h2>
+
+          <div class="settings-profile-card" id="profile-card">
+            <div class="settings-avatar" id="settings-avatar"></div>
+            <div class="settings-profile-info">
+              <div class="settings-username" id="settings-username">—</div>
+              <div class="settings-email" id="settings-email"></div>
+              <div id="settings-admin-badge" class="user-admin-badge hidden">Admin</div>
+            </div>
+          </div>
+
+          <div class="settings-section">
+            <div class="settings-section-title">Linked Discord Accounts</div>
+            <div class="settings-section-hint">
+              Discord accounts linked to your profile. These determine which messages are attributed to you in the archive.
+            </div>
+            <div id="settings-discord-links"><div class="admin-loading">Loading…</div></div>
+          </div>
+
+          <div id="settings-admin-section" class="settings-section hidden">
+            <div class="settings-section-title">Administration</div>
+            <p class="settings-section-hint">You have admin access to this archive.</p>
+            <a href="/admin" class="btn-primary" style="text-decoration:none;display:inline-block">Open Admin Panel</a>
+          </div>
+        </div>
+
+        <!-- Access tab -->
+        <div id="admin-tab-access" class="admin-tab-content hidden">
+          <h2 class="admin-content-title">My Access</h2>
+          <div class="settings-section">
+            <div class="settings-section-title">Accessible Servers</div>
+            <div class="settings-section-hint">The servers you currently have access to in this archive.</div>
+            <div id="settings-guild-access"><div class="admin-loading">Loading…</div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function loadSettings() {
+      const res = await fetch('/api/me');
+      if (res.status === 401) { window.location.href = '/'; return; }
+      const me = await res.json();
+
+      // Profile
+      const initials = (me.username || '?')[0].toUpperCase();
+      const avatarEl = document.getElementById('settings-avatar');
+      const link = me.discord_links && me.discord_links[0];
+      if (link && link.avatar_hash) {
+        avatarEl.innerHTML = `<img src="https://cdn.discordapp.com/avatars/${link.discord_user_id}/${link.avatar_hash}.webp?size=80" onerror="this.parentElement.textContent='${initials}'" />`;
+      } else {
+        avatarEl.textContent = initials;
+      }
+      document.getElementById('settings-username').textContent = me.username;
+      if (me.email) document.getElementById('settings-email').textContent = me.email;
+      if (me.is_admin) {
+        document.getElementById('settings-admin-badge').classList.remove('hidden');
+        document.getElementById('settings-admin-section').classList.remove('hidden');
+      }
+
+      // Discord links
+      const linksEl = document.getElementById('settings-discord-links');
+      if (!me.discord_links || !me.discord_links.length) {
+        linksEl.innerHTML = '<div class="admin-loading" style="font-size:13px">No Discord accounts linked.</div>';
+      } else {
+        linksEl.innerHTML = '';
+        for (const l of me.discord_links) {
+          const row = document.createElement('div');
+          row.className = 'discord-link-row';
+          row.innerHTML = `
+            <span class="discord-link-name">${escHtml(l.display_name || l.name)}</span>
+            <span class="discord-link-tag">${escHtml(l.name)}</span>
+          `;
+          linksEl.appendChild(row);
+        }
+      }
+    }
+
+    async function loadGuildAccess() {
+      const res = await fetch('/api/guilds');
+      if (!res.ok) { document.getElementById('settings-guild-access').innerHTML = '<div class="admin-loading">Unable to load.</div>'; return; }
+      const guilds = await res.json();
+      const el = document.getElementById('settings-guild-access');
+      if (!guilds.length) {
+        el.innerHTML = '<div class="admin-loading">No servers accessible.</div>';
+        return;
+      }
+      el.innerHTML = '';
+      for (const g of guilds) {
+        const row = document.createElement('div');
+        row.className = 'perm-row';
+        const icon = g.icon_hash
+          ? `<img src="/downloads/${g.id}/guild/icon.png" class="perm-guild-icon" onerror="this.style.display='none'" />`
+          : `<div class="perm-guild-icon perm-guild-icon-text">${escHtml((g.name||'?')[0])}</div>`;
+        row.innerHTML = `${icon}<span class="perm-name">${escHtml(g.name)}</span><span style="font-size:12px;color:var(--green)">✓ Accessible</span>`;
+        el.appendChild(row);
+      }
+    }
+
+    function escHtml(s) {
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    document.querySelectorAll('.admin-tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const tab = btn.dataset.tab;
+        document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.add('hidden'));
+        document.getElementById(`admin-tab-${tab}`).classList.remove('hidden');
+        if (tab === 'access') loadGuildAccess();
+      });
+    });
+
+    loadSettings();
+  </script>
+</body>
+</html>

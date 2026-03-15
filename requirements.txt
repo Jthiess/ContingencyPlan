@@ -1,2 +1,7 @@
-discord
-python-dotenv
+discord.py>=2.3,<3
+asyncpg>=0.29,<1
+python-dotenv>=1.0,<2
+flask>=3.0,<4
+psycopg2-binary>=2.9,<3
+requests>=2.31,<3
+gunicorn>=21.0,<24

@@ -1,3 +1,30 @@
+# Environment
+.env
 *.env
-*.venv
-testing/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Logs (rotated logs included)
+clone.log
+clone.log*.gz
+web.log
+web.log*.gz
+
+# Runtime state
+schedules.json
+
+# Downloaded media
+downloads/
+
+# Development/planning artifacts
+planning/
+messages.txt
+.claude
