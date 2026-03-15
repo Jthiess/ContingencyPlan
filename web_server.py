@@ -20,6 +20,8 @@ import psycopg2.extras
 import requests as http_requests
 from flask import Flask, jsonify, redirect, request, send_from_directory, session
 
+from dotenv import load_dotenv
+
 from config import (
     DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_SCHEMA, DB_USER,
     DOWNLOAD_DIR, FLASK_PORT,
