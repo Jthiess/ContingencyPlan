@@ -129,6 +129,39 @@ def _row(row):
     return d
 
 
+def ensure_core_schema():
+    """Run DatabaseSetup.sql if core tables (e.g. guilds) don't exist yet."""
+    try:
+        conn = get_db()
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT EXISTS("
+            "  SELECT 1 FROM information_schema.tables"
+            "  WHERE table_schema = %s AND table_name = 'guilds'"
+            ")",
+            (DB_SCHEMA,),
+        )
+        exists = cur.fetchone()[0]
+        cur.close()
+        if exists:
+            conn.close()
+            return
+        schema_path = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "DatabaseSetup.sql"
+        )
+        with open(schema_path, "r", encoding="utf-8") as f:
+            schema_sql = f.read()
+        cur = conn.cursor()
+        cur.execute(f"CREATE SCHEMA IF NOT EXISTS {DB_SCHEMA}")
+        cur.execute(schema_sql)
+        conn.commit()
+        cur.close()
+        conn.close()
+        log.info("Database schema created from DatabaseSetup.sql")
+    except Exception as e:
+        log.warning("Could not initialize core schema: %s", e)
+
+
 def ensure_auth_tables():
     """Create authentication/permission tables if they don't already exist."""
     try:
@@ -1696,6 +1729,7 @@ def admin_update_schedule(schedule_id):
 # Initialize auth tables and scheduler at startup
 _load_schedules()
 threading.Thread(target=_scheduler_loop, daemon=True).start()
+ensure_core_schema()
 ensure_auth_tables()
 
 if __name__ == "__main__":
